@@ -1,0 +1,53 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+        jcenter()
+    }
+    dependencies {
+        classpath "gradle.plugin.install4j.install4j:gradle_plugin:7.0.8"
+    }
+}
+plugins{
+    id 'org.hidetake.ssh' version '2.7.1'
+}
+apply plugin: 'application'
+apply plugin: 'distribution'
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    compile "com.force.api:force-partner-api:43.0.0"
+    compile "com.h2database:h2:1.4.199"
+    compile "org.apache.commons:commons-collections4:4.4"
+    testCompile 'junit:junit:4.12'
+}
+
+jar {
+    archiveName ="dbschema-salesforce-jdbc${version}.jar"
+    manifest {
+        attributes 'Main-Class': 'com.dbschema.salesforce.SBDCDriver'
+        attributes 'Specification-Version': "$version"
+        attributes 'Specification-Vendor': "Wise Coders"
+        attributes 'Implementation-Vendor-Id': "dbschema.com"
+        attributes 'Implementation-Vendor': "Wise Coders"
+        attributes 'Implementation-Version': new Date().format( 'yyMMdd' )
+    }
+}
+
+
+task zip(type: Zip, dependsOn:['clean','jar']) {
+    archiveName 'SalesforceJdbcDriver.zip'
+    from configurations.runtime.allArtifacts.files
+    from configurations.runtime
+}
+
+task copyInUserHome(type: Copy,dependsOn:['clean','jar']) {
+    from configurations.runtime.allArtifacts.files
+    from configurations.runtime
+    into "${System.getProperty('user.home')}/.DbSchema/drivers/Salesforce/"
+}
+
