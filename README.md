@@ -42,7 +42,7 @@ while( rs.next() ){
 }
 ```
 
-By default are visible only custom tables. Add tables=all to the JDBC URL to list all tables. 
+By default are visible only custom tables. Add "?tables=all" to the JDBC URL to list all tables. 
 
 We implement also two custom SQL commands: 'reload schema' will read the schema metadata again, 'clean caches' and 'cache all' are related to cached data.
 Cache all will take longer but then the queries will run faster.
@@ -63,10 +63,10 @@ There is no need to register or download the driver - DbSchema will do everythin
 
 Connecting to Salesforce from DbSchema is very simple. You have to concatenate to your password also the Salesforce security token.
 
-[Sign in Salesforce](https://developer.salesforce.com/signup)
+[Sign in Salesforce ](https://developer.salesforce.com/signup)
 
 Login in the Salesforce web platform and go on the 'Cat Icon' on top right / Settings / Personal Information/ Reset My Security Token.
-You will get the security token per email. APPEND THIS TOKEN TO THE PASSWORD (after password) and try again to login.
+You will get the security token per email. APPEND THIS TOKEN TO THE PASSWORD (after password) and try to login.
 
 ![Connect to Salesforce With Security Token](documentation/images/dbschema-salesforce-security-token.png)
 
