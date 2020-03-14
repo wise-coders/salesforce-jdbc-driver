@@ -52,7 +52,7 @@ Statement st = connection.createStatement();
 st.execute("reload schema");
 ```
 
-We appreciate any contributions to this repository. For questions you can contact [DbSchema Technical Support](https://dbschema.com/support.html)
+We appreciate any contributions to this repository. Please create issues in this project for any bug you find or feature request.
 
 ## Hot to Test the JDBC Driver
 
@@ -63,7 +63,7 @@ There is no need to register or download the driver - DbSchema will do everythin
 
 Connecting to Salesforce from DbSchema is very simple. You have to concatenate to your password also the Salesforce security token.
 
-![Sign in Salesforce](https://developer.salesforce.com/signup)
+[Sign in Salesforce](https://developer.salesforce.com/signup)
 
 Login in the Salesforce web platform and go on the 'Cat Icon' on top right / Settings / Personal Information/ Reset My Security Token.
 You will get the security token per email. APPEND THIS TOKEN TO THE PASSWORD (after password) and try again to login.
