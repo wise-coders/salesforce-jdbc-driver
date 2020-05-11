@@ -54,6 +54,10 @@ st.execute("reload schema");
 
 We appreciate any contributions to this repository. Please create issues in this project for any bug you find or feature request.
 
+## Download JDBC Driver Binary Distribution
+
+[Available here](http://www.dbschema.com/jdbc-drivers/SalesfoceJdbcDriver.zip). Unpack and include all jars in your classpath. The driver is compatible with Java 8.
+
 ## Hot to Test the JDBC Driver
 
 The driver can be tested by downloading and installing [DbSchema](https://dbschema.com). DbSchema can be evaluated 15 days for free.
@@ -90,5 +94,5 @@ depending on the number of requests we get.
 
 # License
 
-BSD License-3. Free to use, distribution forbidden. Improvements of the driver accepted only in https://bitbucket.org/dbschema/saleforce-jdbc-driver.
+BSD License-3. Free to use, distribution forbidden. Improvements of the driver accepted only in https://bitbucket.org/wise-coders/saleforce-jdbc-driver.
 

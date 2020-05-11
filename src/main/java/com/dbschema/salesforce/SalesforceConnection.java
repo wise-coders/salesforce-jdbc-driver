@@ -35,7 +35,6 @@ public class SalesforceConnection implements Connection {
     private final String dbId;
     public final JdbcConnection h2Connection;
     public final PartnerConnection partnerConnection;
-    private final  Map<String,String> parameters;
     private final TransferReader reader;
     private static final HashMap<String,Schema> schemes = new HashMap<>();
 
@@ -44,8 +43,7 @@ public class SalesforceConnection implements Connection {
         this.dbId = dbId;
         this.h2Connection = h2Connection;
         this.partnerConnection = partnerConnection;
-        this.parameters = parameters;
-        ShowTables showTables = ShowTables.custom;
+        ShowTables showTables = ShowTables.all;
         if ( parameters.containsKey("tables")){
             if( "all".equalsIgnoreCase(parameters.get("tables"))) showTables = ShowTables.all;
             else if( "custom".equalsIgnoreCase(parameters.get("tables"))) showTables = ShowTables.custom;
