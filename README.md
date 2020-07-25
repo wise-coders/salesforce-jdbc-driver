@@ -1,5 +1,5 @@
-# Open Source Salesforce JDBC Driver
-Full compatible JDBC driver provided by [DbSchema Database Designer](https://www.dbschema.com).
+# Salesforce JDBC Driver | DbSchema Salesforce Designer
+Full compatible JDBC driver provided by [DbSchema Salesforce Designer](https://dbschema.com/database-designer/Salesforce.html).
 
 ## Feature List
 
@@ -56,7 +56,7 @@ We appreciate any contributions to this repository. Please create issues in this
 
 ## Download JDBC Driver Binary Distribution
 
-[Available here](http://www.dbschema.com/jdbc-drivers/SalesfoceJdbcDriver.zip). Unpack and include all jars in your classpath. The driver is compatible with Java 8.
+[Download here](http://www.dbschema.com/jdbc-drivers/SalesfoceJdbcDriver.zip). Unpack and include all jars in your classpath. The driver is compatible with Java 8.
 
 ## Hot to Test the JDBC Driver
 
@@ -76,14 +76,14 @@ You will get the security token per email. APPEND THIS TOKEN TO THE PASSWORD (af
 
 The JDBC URL can be edited directly in the second tab
 
-![Connect to Salesforce With Security Token](documentation/images/dbschema-salesforce-connection-dialog-custom-url.png)
+![DbSchema Salesforce Connection Dialog](documentation/images/dbschema-salesforce-connection-dialog-custom-url.png)
 
 In DbSchema you have access to different tools, like Visual Query Builder:
-![Connect to Salesforce With Security Token](documentation/images/dbschema-salesforce-query-builder.png)
+![Salesforce Visual Query Builder](documentation/images/dbschema-salesforce-query-builder.png)
 
 ... or SQL Editor
 
-![Connect to Salesforce With Security Token](documentation/images/dbschema-salesforce-sql-editor.png)
+![Saleforce SQL Editor](documentation/images/dbschema-salesforce-sql-editor.png)
 
 or even more, like Random Data Generator, Data Loader, Virtual Foreign Keys, Forms and Reports, etc.
 
