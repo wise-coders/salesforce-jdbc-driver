@@ -72,10 +72,10 @@ public class TransferWriter {
             Object value = field.getValue();
             Column column = table.getColumn( field.getName() );
             int i = table.columns.indexOf( column );
-            if (value != null) {
-                stInsert.setObject(i+1, value);
-            } else {
+            if (value == null) {
                 stInsert.setNull(i+1, Types.VARCHAR );
+            } else {
+                stInsert.setObject(i+1, value);
             }
         }
         stInsert.execute();
