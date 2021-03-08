@@ -16,11 +16,7 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+import java.util.logging.*;
 
 /**
  * Copyright Wise Coders Gmbh. Licensed under BSD License-3: free to use,distribution forbidden. Improvements accepted only in https://bitbucket.org/dbschema/salesforce-jdbc-driver
@@ -46,7 +42,11 @@ public class SalesforceJdbcDriver implements Driver {
 
             LOGGER.setLevel(Level.FINEST);
             LOGGER.addHandler(consoleHandler);
-        } catch ( SQLException ex ){
+
+            final FileHandler fileHandler = new FileHandler(System.getProperty("user.home") + "/.DbSchema/logs/SalesforceJdbcDriver.log");
+            fileHandler.setFormatter( new SimpleFormatter());
+            LOGGER.addHandler(fileHandler);
+        } catch ( Exception ex ){
             ex.printStackTrace();
         }
     }
@@ -75,12 +75,12 @@ public class SalesforceJdbcDriver implements Driver {
             final String password = parameters.get("password");
             final String sessionId = parameters.get("sessionid");
             PartnerConnection partnerConnection;
-            if ( sessionId != null ) {
-                partnerConnection = getPartnerConnection(sessionId);
-            } else {
+            if (sessionId == null) {
                 if (userName == null) throw new SQLException("Missing username. Please add it to URL as user=<value>");
                 if (password == null) throw new SQLException("Missing password. Please add it to URL as password=<value>");
                 partnerConnection = getPartnerConnection( userName, password );
+            } else {
+                partnerConnection = getPartnerConnection(sessionId);
             }
             final String h2DbName = md5Java( userName != null ? userName : sessionId );
 
@@ -127,11 +127,8 @@ public class SalesforceJdbcDriver implements Driver {
         }
     }
 
-
     private static final String DEFAULT_LOGIN_DOMAIN = "login.salesforce.com";
     private static final String SANDBOX_LOGIN_DOMAIN = "test.salesforce.com";
-    private static final long CONNECTION_TIMEOUT = TimeUnit.SECONDS.toMillis(10);
-    private static final long READ_TIMEOUT = TimeUnit.SECONDS.toMillis(30);
     private static final String DEFAULT_API_VERSION = "43.0";
 
 
