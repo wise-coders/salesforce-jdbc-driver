@@ -13,6 +13,17 @@ plugins{
 }
 apply plugin: 'application'
 apply plugin: 'distribution'
+apply plugin: 'java'
+
+compileJava{
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+    doFirst {
+        options.compilerArgs = [
+                '--module-path', classpath.asPath,
+        ]
+    }
+}
 
 repositories {
     mavenCentral()

@@ -86,7 +86,7 @@ public class SalesforceJdbcDriver implements Driver {
 
             return getSalesforceConnection( h2DbName, partnerConnection, parameters );
         } else {
-            throw new SQLException("Incorrect URL. Expected jdbc:dbschema:dbf:<folderPath>");
+            throw new SQLException("Incorrect URL. Expected jdbc:dbschema:salesforce://<parameters>");
         }
     }
 
@@ -126,10 +126,11 @@ public class SalesforceJdbcDriver implements Driver {
             return Connector.newConnection(config);
         }
     }
+    // https://login.salesforce.com/services/Soap/u/51.0
 
     private static final String DEFAULT_LOGIN_DOMAIN = "login.salesforce.com";
     private static final String SANDBOX_LOGIN_DOMAIN = "test.salesforce.com";
-    private static final String DEFAULT_API_VERSION = "43.0";
+    private static final String DEFAULT_API_VERSION = "51.0";
 
 
     private URI getH2DatabasePath(String path ){
@@ -146,7 +147,7 @@ public class SalesforceJdbcDriver implements Driver {
         return url.startsWith(JDBC_PREFIX);
     }
 
-    class ExtendedDriverPropertyInfo extends DriverPropertyInfo {
+    static class ExtendedDriverPropertyInfo extends DriverPropertyInfo {
         ExtendedDriverPropertyInfo( String name, String value, String[] choices, String description ){
             super( name, value);
             this.description = description;
