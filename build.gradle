@@ -8,12 +8,25 @@ buildscript {
         classpath "gradle.plugin.install4j.install4j:gradle_plugin:7.0.8"
     }
 }
+
 plugins{
     id 'org.hidetake.ssh' version '2.7.1'
 }
+
 apply plugin: 'application'
 apply plugin: 'distribution'
 apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "com.force.api:force-partner-api:52.1.0"
+    compile "com.h2database:h2:1.4.200"
+    compile "org.apache.commons:commons-collections4:4.4"
+    testCompile 'junit:junit:4.12'
+}
 
 compileJava{
     sourceCompatibility = '1.8'
@@ -23,18 +36,6 @@ compileJava{
                 '--module-path', classpath.asPath,
         ]
     }
-}
-
-repositories {
-    mavenCentral()
-}
-
-
-dependencies {
-    compile "com.force.api:force-partner-api:51.2.0"
-    compile "com.h2database:h2:1.4.200"
-    compile "org.apache.commons:commons-collections4:4.4"
-    testCompile 'junit:junit:4.12'
 }
 
 jar {
@@ -48,7 +49,6 @@ jar {
         attributes 'Implementation-Version': new Date().format( 'yyMMdd' )
     }
 }
-
 
 task zip(type: Zip, dependsOn:['clean','jar']) {
     archiveName 'SalesforceJdbcDriver.zip'

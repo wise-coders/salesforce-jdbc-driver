@@ -130,7 +130,7 @@ public class SalesforceJdbcDriver implements Driver {
 
     private static final String DEFAULT_LOGIN_DOMAIN = "login.salesforce.com";
     private static final String SANDBOX_LOGIN_DOMAIN = "test.salesforce.com";
-    private static final String DEFAULT_API_VERSION = "51.0";
+    private static final String DEFAULT_API_VERSION = "52.0";
 
 
     private URI getH2DatabasePath(String path ){
