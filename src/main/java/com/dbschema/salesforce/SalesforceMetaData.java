@@ -8,7 +8,7 @@ import com.dbschema.salesforce.schema.Table;
 import java.sql.*;
 
 /**
- * Copyright Wise Coders Gmbh. Licensed under BSD License-3: free to use,distribution forbidden. Improvements accepted only in https://bitbucket.org/dbschema/salesforce-jdbc-driver
+ * Copyright Wise Coders Gmbh. Redistribution allowed. Modifications only in https://bitbucket.org/dbschema/salesforce-jdbc-driver
  */
 public class SalesforceMetaData implements DatabaseMetaData {
 

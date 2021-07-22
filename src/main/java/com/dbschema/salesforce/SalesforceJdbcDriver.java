@@ -19,7 +19,7 @@ import java.util.Properties;
 import java.util.logging.*;
 
 /**
- * Copyright Wise Coders Gmbh. Licensed under BSD License-3: free to use,distribution forbidden. Improvements accepted only in https://bitbucket.org/dbschema/salesforce-jdbc-driver
+ * Copyright Wise Coders Gmbh. Redistribution allowed. Modifications only in https://bitbucket.org/dbschema/salesforce-jdbc-driver
  * When you open a connection we load internally the list of tables.
  * When you execute a query, we check which table names can be found in the query and we transfer them in an internal H2 database stored in user.home/.DbSchema
  * We also create a proxy on Statement and intercept certain commands we implement in the driver.
