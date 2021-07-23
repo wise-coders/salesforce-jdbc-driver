@@ -56,7 +56,7 @@ We appreciate any contributions to this repository. Please create issues in this
 
 ## Download JDBC Driver Binary Distribution
 
-[Download here](http://www.dbschema.com/jdbc-drivers/SalesfoceJdbcDriver.zip). Unpack and include all jars in your classpath. The driver is compatible with Java 8.
+[Download here](http://www.dbschema.com/jdbc-drivers/SalesforceJdbcDriver.zip). Unpack and include all jars in your classpath. The driver is compatible with Java 8.
 
 ## Hot to Test the JDBC Driver
 
@@ -94,5 +94,5 @@ depending on the number of requests we get.
 
 # License
 
-BSD License-3. Free to use, distribution forbidden. Improvements of the driver accepted only in https://bitbucket.org/wise-coders/saleforce-jdbc-driver.
+Free to use, distribution forbidden. Improvements or changes of the code accepted only in the main repository https://github.com/wise-coders/saleforce-jdbc-driver.
 
