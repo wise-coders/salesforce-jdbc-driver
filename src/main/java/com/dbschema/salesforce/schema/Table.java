@@ -10,22 +10,23 @@ import java.util.regex.Pattern;
  */
 public class Table implements Serializable {
 
-    public final String name;
+    public final String name, comment;
     public final Pattern findNamePattern;
     public final List<Column> columns = new ArrayList<>();
     public final List<ForeignKey> foreignKeys = new ArrayList<>();
     public final boolean isQueriable;
     private boolean isLoaded = false;
 
-    public Table(String name, boolean isQueriable) {
+    public Table(String name, boolean isQueriable, String comment ) {
         this.name = name;
         this.isQueriable = isQueriable;
+        this.comment = comment;
         // NAME SURROUNDED BY NON-LETTER-OR-DIGIT OR EOL
         this.findNamePattern = Pattern.compile("\\W" + name + "\\W|\\W" + name + "$", Pattern.DOTALL |Pattern.CASE_INSENSITIVE );
     }
 
-    public Column createColumn ( String name, String type, int length, int digits, int scale, boolean nullable, boolean autoIncrement ){
-        Column column = new Column( this, name, type, length, digits, scale, nullable, autoIncrement );
+    public Column createColumn ( String name, String type, int length, int digits, int scale, boolean nullable, boolean autoIncrement, String comment ){
+        Column column = new Column( this, name, type, length, digits, scale, nullable, autoIncrement, comment );
         columns.add( column );
         return column;
     }

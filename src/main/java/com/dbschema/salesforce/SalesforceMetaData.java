@@ -33,7 +33,7 @@ public class SalesforceMetaData implements DatabaseMetaData {
                 "TABLE_TYPE", "REMARKS", "TYPE_CAT", "TYPE_SCHEM", "TYPE_NAME", "SELF_REFERENCING_COL_NAME",
                 "REF_GENERATION"});
         for (Table table: connection.getSchemaDef().tables ) {
-            resultSet.addRow(new String[]{null, DEFAULT_SCHEMA_NAME, table.name, "TABLE", "", "", "", "", "", ""});
+            resultSet.addRow(new String[]{null, DEFAULT_SCHEMA_NAME, table.name, "TABLE", table.comment, "", "", "", "", ""});
         }
         return resultSet;
     }
@@ -78,7 +78,7 @@ public class SalesforceMetaData implements DatabaseMetaData {
                                 "" + column.scale, // "DECIMAL_DIGITS",
                                 "10", // "NUM_PREC_RADIX",
                                 "" + ( column.nullable ? columnNullable : columnNoNulls ), // "NULLABLE",
-                                "", // "REMARKS",
+                                column.comment, // "REMARKS",
                                 "", // "COLUMN_DEF",
                                 "0", // "SQL_DATA_TYPE", (not used)
                                 "0", // "SQL_DATETIME_SUB", (not used)

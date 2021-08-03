@@ -32,7 +32,7 @@ public class Schema {
                         ( showTables == ShowTables.all ||
                                 ( showTables == ShowTables.custom && desc.isCustom() ) ||
                                 ( showTables == ShowTables.intern && !desc.isCustom() ) ) ) {
-                    _tables.add(new Table(desc.getName(), desc.isQueryable()));
+                    _tables.add(new Table(desc.getName(), desc.isQueryable(), desc.getLabel() ));
                 }
             }
             tables.clear();
@@ -50,7 +50,7 @@ public class Schema {
                 DescribeSObjectResult result = connection.describeSObject(table.getName());
                 for (Field field : result.getFields()) {
                     Column column = table.createColumn( field.getName(), getType(field),
-                            field.getLength(), field.getDigits(), field.getScale(),  field.isNillable(), field.isAutoNumber());
+                            field.getLength(), field.getDigits(), field.getScale(),  field.isNillable(), field.isAutoNumber(), field.getLabel());
                     column.setCalculated(field.isCalculated() || field.isAutoNumber());
                     String[] referenceTos = field.getReferenceTo();
                     if (referenceTos != null) {

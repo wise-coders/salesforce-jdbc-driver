@@ -5,12 +5,10 @@ package com.dbschema.salesforce.io;
  */
 public class ForceResultField {
 
-    public static final String NESTED_RESULT_SET_FIELD_TYPE = "nestedResultSet";
-
-    private String entityType;
-    private String name;
+    private final String entityType;
+    private final String name;
     private Object value;
-    private String fieldType;
+    private final String fieldType;
 
     public ForceResultField(String entityType, String fieldType, String name, Object value) {
 
@@ -72,11 +70,8 @@ public class ForceResultField {
         } else if (!name.equals(other.name))
             return false;
         if (value == null) {
-            if (other.value != null)
-                return false;
-        } else if (!value.equals(other.value))
-            return false;
-        return true;
+            return other.value == null;
+        } else return value.equals(other.value);
     }
 
     public String getFieldType() {

@@ -8,6 +8,8 @@ import com.sforce.ws.ConnectorConfig;
 import org.h2.jdbc.JdbcConnection;
 
 import java.io.File;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -78,6 +80,14 @@ public class SalesforceJdbcDriver implements Driver {
             if (sessionId == null) {
                 if (userName == null) throw new SQLException("Missing username. Please add it to URL as user=<value>");
                 if (password == null) throw new SQLException("Missing password. Please add it to URL as password=<value>");
+                java.net.Authenticator.setDefault(new Authenticator() {
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(
+                                userName,
+                                password.toCharArray());
+                    }
+                });
                 partnerConnection = getPartnerConnection( userName, password );
             } else {
                 partnerConnection = getPartnerConnection(sessionId);

@@ -9,15 +9,16 @@ import java.sql.Types;
 public class Column implements Serializable {
 
     public final Table table;
-    public final String name;
+    public final String name, comment;
     private String type;
     public boolean calculated, nullable, autoIncrement;
     public int length, digits, scale;
 
 
-    public Column(Table table, String name, String type, int length, int digits, int scale, boolean nullable, boolean autoIncrement ) {
+    public Column(Table table, String name, String type, int length, int digits, int scale, boolean nullable, boolean autoIncrement, String comment ) {
         this.table = table;
         this.name = name;
+        this.comment = comment;
         this.type = type;
         this.nullable = nullable;
         this.length = length;
