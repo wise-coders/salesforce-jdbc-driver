@@ -32,7 +32,7 @@ public class Schema {
                         ( showTables == ShowTables.all ||
                                 ( showTables == ShowTables.custom && desc.isCustom() ) ||
                                 ( showTables == ShowTables.intern && !desc.isCustom() ) ) ) {
-                    _tables.add(new Table(desc.getName(), desc.isQueryable(), desc.getLabel() ));
+                    _tables.add( new Table(desc.getName(), desc.isQueryable(), desc.getLabel() ));
                 }
             }
             tables.clear();

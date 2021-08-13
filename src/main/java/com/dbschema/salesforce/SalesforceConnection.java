@@ -67,7 +67,7 @@ public class SalesforceConnection implements Connection {
     }
 
     private void transferDataForTablesFromQuery( String query ) throws SQLException{
-        if ( query != null && !query.isBlank()){
+        if ( query != null && !query.isEmpty()){
             ensureTablesAreLoaded();
             for ( Table table : getSchemaDef().tables ){
                 if (!table.isLoaded() && table.findNamePattern.matcher(query).find() ){
