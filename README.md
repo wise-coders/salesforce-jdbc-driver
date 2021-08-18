@@ -28,10 +28,8 @@ This allows us to use all possible joins ( LEFT, OUTER ), group by, order by, se
 The JDBC URL is
 
 jdbc:dbschema:salesforce://
-
-or 
-
 jdbc:dbschema:salesforce://sessionid=<sessionid>
+jdbc:dbschema:salesforce://user=...&password=...
 
 ```
 Connection con = DriverManager.getConnection( "jdbc:dbschema:saleforce://username=lulu@yahoo.com;password=somepasswordwithtoken" );
