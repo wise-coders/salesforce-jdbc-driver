@@ -32,7 +32,7 @@ jdbc:dbschema:salesforce://sessionid=<sessionid>
 jdbc:dbschema:salesforce://user=...&password=...
 
 ```
-Connection con = DriverManager.getConnection( "jdbc:dbschema:saleforce://username=lulu@yahoo.com;password=somepasswordwithtoken" );
+Connection con = DriverManager.getConnection( "jdbc:dbschema:saleforce://username=lulu@yahoo.com&password=somepasswordwithtoken" );
 Statement st = con.createStatement();
 ResultSet rs = st.executeQuery("select * from UserRole")
 while( rs.next() ){
