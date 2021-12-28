@@ -19,19 +19,24 @@ package com.dbschema.salesforce;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.*;
+import java.util.Properties;
 
 
 public class TestConnectivity {
 
     private static Connection connection;
 
-
-
     @Before
-    public void testDriver() throws SQLException {
+    public void testDriver() throws SQLException, IOException {
         new SalesforceJdbcDriver();
-        final String URL = "jdbc:dbschema:salesforce://user=dragospruteanu@yahoo.com&password=dragos125Opv1Gbkbb5K7ayRNegM7EkMp";
+        FileInputStream input = new FileInputStream("gradle.properties");
+        Properties prop = new Properties();
+        prop.load(input);
+        // IN gradle.properties EDIT salesforceURL=jdbc:dbschema:salesforce://user=...&password=...+token
+        final String URL = prop.getProperty("salesforceURL");
         connection = DriverManager.getConnection( URL );
     }
 

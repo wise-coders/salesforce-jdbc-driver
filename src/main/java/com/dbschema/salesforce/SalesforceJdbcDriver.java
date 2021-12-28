@@ -1,10 +1,12 @@
 package com.dbschema.salesforce;
 
 
+import com.dbschema.salesforce.io.H2Trigger;
 import com.sforce.soap.partner.Connector;
 import com.sforce.soap.partner.PartnerConnection;
 import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
+import org.h2.api.Trigger;
 import org.h2.jdbc.JdbcConnection;
 
 import java.io.File;
@@ -93,6 +95,7 @@ public class SalesforceJdbcDriver implements Driver {
                 partnerConnection = getPartnerConnection(sessionId);
             }
             final String h2DbName = md5Java( userName != null ? userName : sessionId );
+            H2Trigger.partnerConnection = partnerConnection;
 
             return getSalesforceConnection( h2DbName, partnerConnection, parameters );
         } else {

@@ -7,3 +7,4 @@ dbs.iml
 gradle
 gradlew
 gradlew.bat
+gradle.properties

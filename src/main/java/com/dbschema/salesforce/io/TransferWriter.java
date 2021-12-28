@@ -17,7 +17,7 @@ import static com.dbschema.salesforce.SalesforceJdbcDriver.LOGGER;
  */
 public class TransferWriter {
 
-    private final static char QUOTE_CHAR = '"';
+    public final static char QUOTE_CHAR = '"';
 
     private String insertSql;
     private final SalesforceConnection salesforceConnection;
@@ -61,6 +61,17 @@ public class TransferWriter {
         //LOGGER.log(Level.INFO, createSb.toString());
         salesforceConnection.h2Connection.prepareStatement(createSb.toString()).execute();
         salesforceConnection.h2Connection.commit();
+
+        /*
+        THIS CAN BE USED TO WRITE DATA BACK TO SALESFORCE
+        String createTriggerSQL = "CREATE TRIGGER " + QUOTE_CHAR + "trg_" + table.name + QUOTE_CHAR +
+                "BEFORE UPDATE, INSERT, DELETE ON " + QUOTE_CHAR + table.name + QUOTE_CHAR +
+                " FOR EACH ROW\n" +
+                " CALL \"com.dbschema.salesforce.io.H2Trigger\"";
+
+        salesforceConnection.h2Connection.prepareStatement( createTriggerSQL ).execute();
+        salesforceConnection.h2Connection.commit();
+        */
 
         this.insertSql = insertSb.toString() + insertValuesSb.toString();
     }

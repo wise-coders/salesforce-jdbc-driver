@@ -90,7 +90,7 @@ public class Schema {
         return s.equalsIgnoreCase("double") ? "decimal" : s;
     }
 
-    private Table getTable( String name ){
+    public Table getTable( String name ){
         for ( Table table : tables ){
             if ( name.equals( table.getName() )){
                 return table;

@@ -58,6 +58,10 @@ public class SalesforceConnection implements Connection {
         return schemes.get( dbId );
     }
 
+    public static Schema getSchema( String schemaName ){
+        return schemes.get( schemaName );
+    }
+
     void ensureTablesAreLoaded() throws SQLException {
         getSchemaDef().ensureTablesAreLoaded( partnerConnection );
     }
