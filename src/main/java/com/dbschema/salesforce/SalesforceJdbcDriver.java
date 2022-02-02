@@ -33,7 +33,7 @@ import java.util.logging.*;
 public class SalesforceJdbcDriver implements Driver {
 
     private static final String JDBC_PREFIX = "jdbc:dbschema:salesforce://";
-    private static final String INTERNAL_H2_LOCATION = ".DbSchema/jdbc-salesforce-cache/";
+    private static final String INTERNAL_H2_LOCATION = "~/.DbSchema/jdbc-salesforce-cache/";
     public static final Logger LOGGER = Logger.getLogger( SalesforceJdbcDriver.class.getName() );
 
 
@@ -105,8 +105,8 @@ public class SalesforceJdbcDriver implements Driver {
     }
 
     private SalesforceConnection getSalesforceConnection(String dbId, PartnerConnection partnerConnection, Map<String,String> parameters ) throws SQLException {
-        final URI h2DatabasePath = getH2DatabasePath( dbId );
-        final String h2JdbcUrl = "jdbc:h2:" + h2DatabasePath.toASCIIString() + ";database_to_upper=false";
+        final String h2DatabasePath = getH2DatabasePath( dbId );
+        final String h2JdbcUrl = "jdbc:h2:" + h2DatabasePath + ";database_to_upper=false";
         LOGGER.log(Level.INFO, "Create H2 database '" + h2JdbcUrl + "'");
         return new SalesforceConnection( dbId, (JdbcConnection)(new org.h2.Driver().connect( h2JdbcUrl, new Properties() )), partnerConnection,  parameters );
     }
@@ -147,13 +147,12 @@ public class SalesforceJdbcDriver implements Driver {
     private static final String DEFAULT_API_VERSION = "52.0";
 
 
-    private URI getH2DatabasePath(String path ){
-        final URI h2Home = new File( System.getProperty("user.home")).toURI().resolve(INTERNAL_H2_LOCATION);
-        final File h2File = new File(h2Home);
+    private String getH2DatabasePath(String path ){
+        final File h2File = new File(INTERNAL_H2_LOCATION);
         if ( !h2File.exists()) {
             h2File.mkdirs();
         }
-        return h2Home.resolve( path );
+        return INTERNAL_H2_LOCATION + path;
     }
 
     @Override
