@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    compile "com.force.api:force-partner-api:53.0.0"
+    compile "com.force.api:force-partner-api:54.0.0"
     compile "com.h2database:h2:1.4.200"
     compile "org.apache.commons:commons-collections4:4.4"
     testCompile 'junit:junit:4.12'
