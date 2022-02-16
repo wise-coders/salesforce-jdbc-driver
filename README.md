@@ -14,6 +14,13 @@ In our plans - just let us know if you need this:
 * By each UPDATE, DELETE or INSERT modify back the Salesforce database
 * By adding new columns or tables create them also in the Salesforce
 
+## Licensing
+
+[GPL-3 dual license](https://opensource.org/licenses/GPL-3.0).
+The driver is free to use by everyone.
+Code modifications allowed only to the current repository as pull requests
+https://github.com/wise-coders/salesforce-jdbc-driver
+
 ## How the Driver Works
 
 The driver replicates the data into an local H2 database. 
@@ -90,7 +97,5 @@ or even more, like Random Data Generator, Data Loader, Virtual Foreign Keys, For
 The driver support all native SQL queries. For now only a read-only implementation is available. We will add write capabilities 
 depending on the number of requests we get.
 
-# License
 
-Free to use, distribution forbidden. Improvements or changes of the code accepted only in the main repository https://github.com/wise-coders/saleforce-jdbc-driver.
 

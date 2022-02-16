@@ -2,6 +2,13 @@ package com.dbschema.salesforce.schema;
 
 import java.sql.Types;
 
+/**
+ * Copyright Wise Coders GmbH https://wisecoders.com
+ * Driver is used in the DbSchema Database Designer https://dbschema.com
+ * Free to be used by everyone.
+ * Code modifications allowed only to GitHub repository https://github.com/wise-coders/salesforce-jdbc-driver
+ */
+
 public class TypeInfo {
 
     public TypeInfo(String typeName, int javaSqlType, int precision, int minScale, int maxScale, int radix) {

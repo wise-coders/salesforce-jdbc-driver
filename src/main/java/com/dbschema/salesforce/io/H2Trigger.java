@@ -9,6 +9,13 @@ import org.h2.api.Trigger;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Copyright Wise Coders GmbH https://wisecoders.com
+ * Driver is used in the DbSchema Database Designer https://dbschema.com
+ * Free to be used by everyone.
+ * Code modifications allowed only to GitHub repository https://github.com/wise-coders/salesforce-jdbc-driver
+ */
+
 public class H2Trigger implements Trigger {
 
     public static PartnerConnection partnerConnection;

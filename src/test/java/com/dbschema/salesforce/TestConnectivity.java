@@ -24,7 +24,12 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
-
+/**
+ * Copyright Wise Coders GmbH https://wisecoders.com
+ * Driver is used in the DbSchema Database Designer https://dbschema.com
+ * Free to be used by everyone.
+ * Code modifications allowed only to GitHub repository https://github.com/wise-coders/salesforce-jdbc-driver
+ */
 public class TestConnectivity {
 
     private static Connection connection;

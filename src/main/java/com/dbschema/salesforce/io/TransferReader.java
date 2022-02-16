@@ -17,9 +17,11 @@ import java.util.stream.Collectors;
 import static com.dbschema.salesforce.SalesforceJdbcDriver.LOGGER;
 
 /**
- * Copyright Wise Coders Gmbh. Redistribution allowed. Modifications only in https://bitbucket.org/dbschema/salesforce-jdbc-driver
+ * Copyright Wise Coders GmbH https://wisecoders.com
+ * Driver is used in the DbSchema Database Designer https://dbschema.com
+ * Free to be used by everyone.
+ * Code modifications allowed only to GitHub repository https://github.com/wise-coders/salesforce-jdbc-driver
  */
-
 public class TransferReader {
 
     private final SalesforceConnection salesforceConnection;

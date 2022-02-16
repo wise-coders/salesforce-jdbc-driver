@@ -19,13 +19,18 @@ import java.util.regex.Pattern;
 
 
 /**
- *
- * Copyright Wise Coders Gmbh. Redistribution allowed. Modifications only in https://bitbucket.org/dbschema/salesforce-jdbc-driver
  * When you open a connection we load internally the list of tables.
  * When you execute a query, we check which table names can be found in the query and we transfer them in an internal H2 database stored in user.home/.DbSchema
  * We also create a proxy on Statement and intercept certain commands we implement in the driver.
  * The driver can be improved, we are happy for contributions.
+ *
+ *
+ * Copyright Wise Coders GmbH https://wisecoders.com
+ * Driver is used in the DbSchema Database Designer https://dbschema.com
+ * Free to be used by everyone.
+ * Code modifications allowed only to GitHub repository https://github.com/wise-coders/salesforce-jdbc-driver
  */
+
 public class SalesforceConnection implements Connection {
 
     private static final Pattern CLEAN_CACHES = Pattern.compile( "(\\s*)clean(\\s+)caches(\\s+)", Pattern.CASE_INSENSITIVE );
