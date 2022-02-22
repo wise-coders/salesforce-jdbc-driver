@@ -1,8 +1,8 @@
-package com.dbschema.salesforce.io;
+package com.wisecoders.dbschema.salesforce.io;
 
-import com.dbschema.salesforce.SalesforceConnection;
-import com.dbschema.salesforce.schema.Schema;
-import com.dbschema.salesforce.schema.Table;
+import com.wisecoders.dbschema.salesforce.SalesforceConnection;
+import com.wisecoders.dbschema.salesforce.schema.Schema;
+import com.wisecoders.dbschema.salesforce.schema.Table;
 import com.sforce.soap.partner.PartnerConnection;
 import org.h2.api.Trigger;
 

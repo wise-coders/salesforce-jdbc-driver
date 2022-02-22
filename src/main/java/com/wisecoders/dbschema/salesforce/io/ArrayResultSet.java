@@ -1,4 +1,4 @@
-package com.dbschema.salesforce.io;
+package com.wisecoders.dbschema.salesforce.io;
 
 
 

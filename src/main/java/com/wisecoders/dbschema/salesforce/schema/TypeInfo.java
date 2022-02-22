@@ -1,4 +1,4 @@
-package com.dbschema.salesforce.schema;
+package com.wisecoders.dbschema.salesforce.schema;
 
 import java.sql.Types;
 

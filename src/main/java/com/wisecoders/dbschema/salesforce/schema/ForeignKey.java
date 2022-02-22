@@ -1,4 +1,4 @@
-package com.dbschema.salesforce.schema;
+package com.wisecoders.dbschema.salesforce.schema;
 
 /**
  * Copyright Wise Coders GmbH https://wisecoders.com
@@ -6,8 +6,13 @@ package com.dbschema.salesforce.schema;
  * Free to be used by everyone.
  * Code modifications allowed only to GitHub repository https://github.com/wise-coders/salesforce-jdbc-driver
  */
+public class ForeignKey {
 
-public enum ShowTables {
+    public final Column column;
+    public final Table targetTable;
 
-    all, custom, intern
+    public ForeignKey( Column column, Table targetTable ){
+        this.column = column;
+        this.targetTable = targetTable;
+    }
 }

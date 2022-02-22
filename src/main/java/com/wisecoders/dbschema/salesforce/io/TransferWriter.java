@@ -1,8 +1,8 @@
-package com.dbschema.salesforce.io;
+package com.wisecoders.dbschema.salesforce.io;
 
-import com.dbschema.salesforce.SalesforceConnection;
-import com.dbschema.salesforce.schema.Column;
-import com.dbschema.salesforce.schema.Table;
+import com.wisecoders.dbschema.salesforce.SalesforceConnection;
+import com.wisecoders.dbschema.salesforce.schema.Column;
+import com.wisecoders.dbschema.salesforce.schema.Table;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -10,7 +10,7 @@ import java.sql.Types;
 import java.util.List;
 import java.util.logging.Level;
 
-import static com.dbschema.salesforce.SalesforceJdbcDriver.LOGGER;
+import static com.wisecoders.dbschema.salesforce.JdbcDriver.LOGGER;
 
 /**
  * Copyright Wise Coders GmbH https://wisecoders.com

@@ -1,19 +1,16 @@
-package com.dbschema.salesforce;
+package com.wisecoders.dbschema.salesforce;
 
 
-import com.dbschema.salesforce.io.H2Trigger;
+import com.wisecoders.dbschema.salesforce.io.H2Trigger;
 import com.sforce.soap.partner.Connector;
 import com.sforce.soap.partner.PartnerConnection;
 import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
-import org.h2.api.Trigger;
 import org.h2.jdbc.JdbcConnection;
 
 import java.io.File;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
-import java.net.URI;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -34,16 +31,16 @@ import java.util.logging.*;
  * Free to be used by everyone.
  * Code modifications allowed only to GitHub repository https://github.com/wise-coders/salesforce-jdbc-driver
  */
-public class SalesforceJdbcDriver implements Driver {
+public class JdbcDriver implements Driver {
 
     private static final String JDBC_PREFIX = "jdbc:dbschema:salesforce://";
     private static final String INTERNAL_H2_LOCATION = "~/.DbSchema/jdbc-salesforce-cache/";
-    public static final Logger LOGGER = Logger.getLogger( SalesforceJdbcDriver.class.getName() );
+    public static final Logger LOGGER = Logger.getLogger( JdbcDriver.class.getName() );
 
 
     static {
         try {
-            DriverManager.registerDriver( new SalesforceJdbcDriver());
+            DriverManager.registerDriver( new JdbcDriver());
             LOGGER.setLevel(Level.SEVERE);
             final ConsoleHandler consoleHandler = new ConsoleHandler();
             consoleHandler.setLevel(Level.FINEST);
@@ -214,7 +211,7 @@ public class SalesforceJdbcDriver implements Driver {
             digest = sb.toString();
 
         } catch ( NoSuchAlgorithmException ex) {
-            Logger.getLogger(SalesforceJdbcDriver.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JdbcDriver.class.getName()).log(Level.SEVERE, null, ex);
         }
         return digest;
     }

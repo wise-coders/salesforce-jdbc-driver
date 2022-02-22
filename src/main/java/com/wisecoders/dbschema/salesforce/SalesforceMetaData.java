@@ -1,9 +1,9 @@
-package com.dbschema.salesforce;
+package com.wisecoders.dbschema.salesforce;
 
-import com.dbschema.salesforce.io.ArrayResultSet;
-import com.dbschema.salesforce.schema.Column;
-import com.dbschema.salesforce.schema.ForeignKey;
-import com.dbschema.salesforce.schema.Table;
+import com.wisecoders.dbschema.salesforce.io.ArrayResultSet;
+import com.wisecoders.dbschema.salesforce.schema.Column;
+import com.wisecoders.dbschema.salesforce.schema.ForeignKey;
+import com.wisecoders.dbschema.salesforce.schema.Table;
 
 import java.sql.*;
 

@@ -1,4 +1,4 @@
-package com.dbschema.salesforce.schema;
+package com.wisecoders.dbschema.salesforce.schema;
 
 import com.sforce.soap.partner.DescribeGlobalSObjectResult;
 import com.sforce.soap.partner.DescribeSObjectResult;
@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.dbschema.salesforce.SalesforceJdbcDriver.LOGGER;
+import static com.wisecoders.dbschema.salesforce.JdbcDriver.LOGGER;
 
 /**
  * Copyright Wise Coders GmbH https://wisecoders.com

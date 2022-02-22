@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along with DANS DBF Library. If
  * not, see <http://www.gnu.org/licenses/>.
  */
-package com.dbschema.salesforce;
+package com.wisecoders.dbschema.salesforce;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +36,7 @@ public class TestConnectivity {
 
     @Before
     public void testDriver() throws SQLException, IOException {
-        new SalesforceJdbcDriver();
+        new JdbcDriver();
         FileInputStream input = new FileInputStream("gradle.properties");
         Properties prop = new Properties();
         prop.load(input);

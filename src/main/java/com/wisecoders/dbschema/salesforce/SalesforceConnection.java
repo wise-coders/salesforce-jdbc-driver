@@ -1,9 +1,9 @@
-package com.dbschema.salesforce;
+package com.wisecoders.dbschema.salesforce;
 
-import com.dbschema.salesforce.io.TransferReader;
-import com.dbschema.salesforce.schema.Schema;
-import com.dbschema.salesforce.schema.ShowTables;
-import com.dbschema.salesforce.schema.Table;
+import com.wisecoders.dbschema.salesforce.io.TransferReader;
+import com.wisecoders.dbschema.salesforce.schema.Schema;
+import com.wisecoders.dbschema.salesforce.schema.ShowTables;
+import com.wisecoders.dbschema.salesforce.schema.Table;
 import com.sforce.soap.partner.PartnerConnection;
 import org.h2.jdbc.JdbcConnection;
 
@@ -41,7 +41,7 @@ public class SalesforceConnection implements Connection {
     public final JdbcConnection h2Connection;
     public final PartnerConnection partnerConnection;
     private final TransferReader reader;
-    private static final HashMap<String,Schema> schemes = new HashMap<>();
+    private static final HashMap<String, Schema> schemes = new HashMap<>();
 
 
     SalesforceConnection(String dbId, JdbcConnection h2Connection, PartnerConnection partnerConnection, Map<String,String> parameters ){

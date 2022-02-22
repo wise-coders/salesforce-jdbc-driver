@@ -1,7 +1,7 @@
-package com.dbschema.salesforce.io;
+package com.wisecoders.dbschema.salesforce.io;
 
-import com.dbschema.salesforce.SalesforceConnection;
-import com.dbschema.salesforce.schema.Table;
+import com.wisecoders.dbschema.salesforce.SalesforceConnection;
+import com.wisecoders.dbschema.salesforce.schema.Table;
 import com.sforce.soap.partner.QueryResult;
 import com.sforce.soap.partner.sobject.SObject;
 import com.sforce.ws.bind.XmlObject;
@@ -14,7 +14,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-import static com.dbschema.salesforce.SalesforceJdbcDriver.LOGGER;
+import static com.wisecoders.dbschema.salesforce.JdbcDriver.LOGGER;
 
 /**
  * Copyright Wise Coders GmbH https://wisecoders.com
