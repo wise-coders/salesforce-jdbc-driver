@@ -1,16 +1,19 @@
 package com.wisecoders.dbschema.salesforce.io;
 
-import com.wisecoders.dbschema.salesforce.SalesforceConnection;
-import com.wisecoders.dbschema.salesforce.schema.Table;
 import com.sforce.soap.partner.QueryResult;
 import com.sforce.soap.partner.sobject.SObject;
 import com.sforce.ws.bind.XmlObject;
+import com.wisecoders.dbschema.salesforce.SalesforceConnection;
+import com.wisecoders.dbschema.salesforce.schema.Table;
 import org.apache.commons.collections4.IteratorUtils;
 
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -64,11 +67,6 @@ public class TransferReader {
                     SObject[] records = queryResult.getRecords();
                     for (SObject row : records) {
                         List<ForceResultField> clearRow = removeServiceInfo( row );
-                        for ( ForceResultField field : clearRow ){
-                            if ( field.getValue() instanceof List || field.getValue() instanceof Map ){
-                                System.out.println("Here");
-                            }
-                        }
                         writer.transferRecord( clearRow );
                     }
 

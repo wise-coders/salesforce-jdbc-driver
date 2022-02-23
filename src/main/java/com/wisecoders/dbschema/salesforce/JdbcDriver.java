@@ -1,11 +1,11 @@
 package com.wisecoders.dbschema.salesforce;
 
 
-import com.wisecoders.dbschema.salesforce.io.H2Trigger;
 import com.sforce.soap.partner.Connector;
 import com.sforce.soap.partner.PartnerConnection;
 import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
+import com.wisecoders.dbschema.salesforce.io.H2Trigger;
 import org.h2.jdbc.JdbcConnection;
 
 import java.io.File;
@@ -69,11 +69,9 @@ public class JdbcDriver implements Driver {
             }
             String data = url.substring(JDBC_PREFIX.length());
             if ( data.startsWith("?")) data = data.substring(1);
-            System.out.println("Data is = " + data);
             for ( String pair: data.split("&")){
                 String[] pairArray = pair.split("=");
                 if( pairArray.length == 2 ){
-                    System.out.println("key=" + pairArray[0].toLowerCase() + " val=" + pairArray[1] );
                     parameters.put( pairArray[0].toLowerCase(), pairArray[1]);
                 }
             }

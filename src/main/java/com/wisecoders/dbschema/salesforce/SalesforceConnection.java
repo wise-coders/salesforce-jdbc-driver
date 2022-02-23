@@ -1,10 +1,10 @@
 package com.wisecoders.dbschema.salesforce;
 
+import com.sforce.soap.partner.PartnerConnection;
 import com.wisecoders.dbschema.salesforce.io.TransferReader;
 import com.wisecoders.dbschema.salesforce.schema.Schema;
 import com.wisecoders.dbschema.salesforce.schema.ShowTables;
 import com.wisecoders.dbschema.salesforce.schema.Table;
-import com.sforce.soap.partner.PartnerConnection;
 import org.h2.jdbc.JdbcConnection;
 
 import java.lang.reflect.InvocationHandler;

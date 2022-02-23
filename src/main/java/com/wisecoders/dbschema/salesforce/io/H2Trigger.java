@@ -1,9 +1,9 @@
 package com.wisecoders.dbschema.salesforce.io;
 
+import com.sforce.soap.partner.PartnerConnection;
 import com.wisecoders.dbschema.salesforce.SalesforceConnection;
 import com.wisecoders.dbschema.salesforce.schema.Schema;
 import com.wisecoders.dbschema.salesforce.schema.Table;
-import com.sforce.soap.partner.PartnerConnection;
 import org.h2.api.Trigger;
 
 import java.sql.Connection;
