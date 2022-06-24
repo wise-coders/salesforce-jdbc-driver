@@ -61,7 +61,7 @@ We appreciate any contributions to this repository. Please create issues in this
 
 ## Download JDBC Driver Binary Distribution
 
-[Download here](https://dbschema.com/jdbc-drivers/SalesforceJdbcDriver.zip). Unpack and include all jars in your classpath. The driver is compatible with Java 8.
+The driver can be downloaded from the [DbSchema website](https://dbschema.com/jdbc-drivers/SalesforceJdbcDriver.zip). Unpack and include all jars in your classpath. The driver is compatible with Java 8.
 
 ## Hot to Test the JDBC Driver
 

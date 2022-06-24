@@ -70,7 +70,7 @@ public class TransferWriter {
         String createTriggerSQL = "CREATE TRIGGER " + QUOTE_CHAR + "trg_" + table.name + QUOTE_CHAR +
                 "BEFORE UPDATE, INSERT, DELETE ON " + QUOTE_CHAR + table.name + QUOTE_CHAR +
                 " FOR EACH ROW\n" +
-                " CALL \"com.dbschema.salesforce.io.H2Trigger\"";
+                " CALL \"com.wisecoders.dbschema.salesforce.io.H2Trigger\"";
 
         salesforceConnection.h2Connection.prepareStatement( createTriggerSQL ).execute();
         salesforceConnection.h2Connection.commit();
