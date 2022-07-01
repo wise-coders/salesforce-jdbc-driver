@@ -22,10 +22,10 @@ repositories {
 }
 
 dependencies {
-    compile "com.force.api:force-partner-api:54.0.0"
-    compile "com.h2database:h2:2.1.210"
-    compile "org.apache.commons:commons-collections4:4.4"
-    testCompile 'junit:junit:4.12'
+    implementation "com.force.api:force-partner-api:54.0.0"
+    implementation "com.h2database:h2:2.1.210"
+    implementation "org.apache.commons:commons-collections4:4.4"
+    testImplementation 'junit:junit:4.12'
 }
 
 compileJava{
@@ -52,13 +52,13 @@ jar {
 
 task zip(type: Zip, dependsOn:['clean','jar']) {
     archiveName 'SalesforceJdbcDriver.zip'
-    from configurations.runtime.allArtifacts.files
-    from configurations.runtime
+    from configurations.runtimeClasspath.allArtifacts.files
+    from configurations.runtimeClasspath
 }
 
 task copyInUserHome(type: Copy,dependsOn:['clean','jar']) {
-    from configurations.runtime.allArtifacts.files
-    from configurations.runtime
+    from configurations.runtimeClasspath.allArtifacts.files
+    from configurations.runtimeClasspath
     into "${System.getProperty('user.home')}/.DbSchema/drivers/Salesforce/"
 }
 
