@@ -41,16 +41,16 @@ public class JdbcDriver implements Driver {
     static {
         try {
             DriverManager.registerDriver( new JdbcDriver());
-            LOGGER.setLevel(Level.SEVERE);
-            final ConsoleHandler consoleHandler = new ConsoleHandler();
-            consoleHandler.setLevel(Level.FINEST);
-            consoleHandler.setFormatter(new SimpleFormatter());
+            LOGGER.setLevel(Level.ALL);
 
-            LOGGER.setLevel(Level.FINEST);
+            final ConsoleHandler consoleHandler = new ConsoleHandler();
+            consoleHandler.setLevel(Level.ALL);
+            consoleHandler.setFormatter(new SimpleFormatter());
             LOGGER.addHandler(consoleHandler);
 
             final FileHandler fileHandler = new FileHandler(System.getProperty("user.home") + "/.DbSchema/logs/SalesforceJdbcDriver.log");
             fileHandler.setFormatter( new SimpleFormatter());
+            fileHandler.setLevel(Level.ALL);
             LOGGER.addHandler(fileHandler);
         } catch ( Exception ex ){
             ex.printStackTrace();
@@ -209,7 +209,7 @@ public class JdbcDriver implements Driver {
             digest = sb.toString();
 
         } catch ( NoSuchAlgorithmException ex) {
-            Logger.getLogger(JdbcDriver.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
         return digest;
     }
