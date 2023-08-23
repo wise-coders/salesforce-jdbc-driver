@@ -8,13 +8,19 @@ buildscript {
     }
 }
 
+
 plugins{
     id 'org.hidetake.ssh' version '2.7.1'
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+    id 'groovy'
 }
-
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
 apply plugin: 'application'
 apply plugin: 'distribution'
-apply plugin: 'java'
+
 
 repositories {
     mavenCentral()
@@ -38,10 +44,10 @@ compileJava{
 }
 
 jar {
-    archiveFileName ="dbschema-salesforce-jdbc${version}.jar"
+    archiveFileName ="dbschema-salesforce-jdbc${driverVersion}.jar"
     manifest {
         attributes 'Main-Class': 'com.wisecoders.dbschema.salesforce.JdbcDriver'
-        attributes 'Specification-Version': "$version"
+        attributes 'Specification-Version': "$driverVersion"
         attributes 'Specification-Vendor': "Wise Coders"
         attributes 'Implementation-Vendor-Id': "dbschema.com"
         attributes 'Implementation-Vendor': "Wise Coders"
@@ -60,5 +66,79 @@ task copyInUserHome(type: Copy,dependsOn:['clean','jar']) {
     from configurations.runtimeClasspath.allArtifacts.files
     from configurations.runtimeClasspath
     into "${System.getProperty('user.home')}/.DbSchema/drivers/Salesforce/"
+}
+
+
+group = "com.wisecoders"
+archivesBaseName = "salesforce-jdbc-drvier"
+version = "1.4.1"
+
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+javadoc {
+    options.addBooleanOption('html5', true)
+}
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'salesforce-jdbc-driver'
+            from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = 'Salesforce-JDBC-Driver'
+                description = 'Salesforce JDBC Driver'
+                url = 'https://dbschema.com/jdbc-driver/Salesforce.html'
+                properties = [
+                        myProp: "value",
+                        "prop.with.dots": "anotherValue"
+                ]
+                licenses {
+                    license {
+                        name = 'GPL-3Plus dual license. Contributions only to https://github.com/wise-coders/salesforce-jdbc-driver'
+                        url = 'https://github.com/wise-coders/salesforce-jdbc-driver'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'wisecoders'
+                        name = 'Wise Coders GmbH'
+                        email = 'support@wisecoders.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/wise-coders/salesforce-jdbc-driver'
+                    developerConnection = 'scm:git:ssh://github.com/wise-coders/salesforce-jdbc-driver'
+                    url = 'https://github.com/wise-coders/salesforce-jdbc-driver'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "OSSRH"
+            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = project.properties["sonatypeUsername"]
+                password = project.properties["sonatypePassword"]
+            }
+        }
+    }
+}
+signing {
+    sign publishing.publications.mavenJava
 }
 

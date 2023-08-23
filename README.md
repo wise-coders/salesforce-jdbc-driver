@@ -16,7 +16,7 @@ In our plans - just let us know if you need this:
 
 ## Licensing
 
-[GPL-3 dual license](https://opensource.org/licenses/GPL-3.0).
+[CC-BY-ND - Attribution-NoDerivs](https://creativecommons.org/licenses/by-nd/4.0/).
 The driver is free to use by everyone.
 Code modifications allowed only to the current repository as pull requests
 https://github.com/wise-coders/salesforce-jdbc-driver
