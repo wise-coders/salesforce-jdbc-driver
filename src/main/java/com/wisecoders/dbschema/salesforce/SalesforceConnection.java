@@ -7,6 +7,7 @@ import com.wisecoders.dbschema.salesforce.schema.ShowTables;
 import com.wisecoders.dbschema.salesforce.schema.Table;
 import org.h2.jdbc.JdbcConnection;
 
+import java.io.File;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -15,7 +16,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
+
+import static com.wisecoders.dbschema.salesforce.JdbcDriver.LOGGER;
 
 
 /**
@@ -33,34 +37,47 @@ import java.util.regex.Pattern;
 
 public class SalesforceConnection implements Connection {
 
+    private static final String INTERNAL_H2_LOCATION = "~/.DbSchema/jdbc-salesforce-cache/";
     private static final Pattern CLEAN_CACHES = Pattern.compile( "(\\s*)clean(\\s+)caches(\\s+)", Pattern.CASE_INSENSITIVE );
     private static final Pattern CACHE_ALL = Pattern.compile( "(\\s*)cache(\\s+)all(\\s+)", Pattern.CASE_INSENSITIVE );
     private static final Pattern RELOAD_SCHEMA = Pattern.compile( "(\\s*)reload(\\s+)schema(\\s+)", Pattern.CASE_INSENSITIVE );
 
-    private final String dbId;
+    private final String databaseName;
     public final JdbcConnection h2Connection;
     public final PartnerConnection partnerConnection;
     private final TransferReader reader;
     private static final HashMap<String, Schema> schemes = new HashMap<>();
 
 
-    SalesforceConnection(String dbId, JdbcConnection h2Connection, PartnerConnection partnerConnection, Map<String,String> parameters ){
-        this.dbId = dbId;
-        this.h2Connection = h2Connection;
+    SalesforceConnection(String databaseName, PartnerConnection partnerConnection, Map<String,String> parameters ) throws SQLException {
+        this.databaseName = databaseName;
         this.partnerConnection = partnerConnection;
+        final String h2DatabasePath = getH2DatabasePath(databaseName);
+        final String h2JdbcUrl = "jdbc:h2:" + h2DatabasePath + ";database_to_upper=false";
+        LOGGER.log(Level.INFO, "Create H2 database '" + h2JdbcUrl + "'");
+        this.h2Connection = (JdbcConnection)(new org.h2.Driver().connect( h2JdbcUrl, new Properties() ));
+
         ShowTables showTables = ShowTables.all;
-        if ( parameters.containsKey("tables")){
-            if( "all".equalsIgnoreCase(parameters.get("tables"))) showTables = ShowTables.all;
-            else if( "custom".equalsIgnoreCase(parameters.get("tables"))) showTables = ShowTables.custom;
+        if ( parameters.containsKey("tables") && "custom".equalsIgnoreCase(parameters.get("tables"))){
+            showTables = ShowTables.custom;
         }
-        if ( !schemes.containsKey( dbId )) {
-            schemes.put(dbId, new Schema( showTables ));
+        if ( !schemes.containsKey(databaseName)) {
+            schemes.put(databaseName, new Schema( showTables ));
         }
         this.reader = new TransferReader( this );
     }
 
+    private String getH2DatabasePath(String path ){
+        final File h2File = new File(INTERNAL_H2_LOCATION);
+        if ( !h2File.exists()) {
+            h2File.mkdirs();
+        }
+        return INTERNAL_H2_LOCATION + path;
+    }
+
+
     public Schema getSchemaDef(){
-        return schemes.get( dbId );
+        return schemes.get(databaseName);
     }
 
     public static Schema getSchema( String schemaName ){

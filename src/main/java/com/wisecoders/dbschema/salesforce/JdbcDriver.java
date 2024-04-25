@@ -6,14 +6,10 @@ import com.sforce.soap.partner.PartnerConnection;
 import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
 import com.wisecoders.dbschema.salesforce.io.H2Trigger;
-import org.h2.jdbc.JdbcConnection;
+import com.wisecoders.dbschema.salesforce.io.Util;
 
-import java.io.File;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,15 +22,10 @@ import java.util.logging.*;
  * We also create a proxy on Statement and intercept certain commands we implement in the driver.
  * The driver can be improved, we are happy for contributions.
  *
- * Copyright Wise Coders GmbH https://wisecoders.com
- * Driver is used in the DbSchema Database Designer https://dbschema.com
- * Free to be used by everyone.
- * Code modifications allowed only to GitHub repository https://github.com/wise-coders/salesforce-jdbc-driver
  */
 public class JdbcDriver implements Driver {
 
     private static final String JDBC_PREFIX = "jdbc:dbschema:salesforce://";
-    private static final String INTERNAL_H2_LOCATION = "~/.DbSchema/jdbc-salesforce-cache/";
     public static final Logger LOGGER = Logger.getLogger( JdbcDriver.class.getName() );
 
 
@@ -68,17 +59,27 @@ public class JdbcDriver implements Driver {
                 }
             }
             String data = url.substring(JDBC_PREFIX.length());
-            if ( data.startsWith("?")) data = data.substring(1);
-            for ( String pair: data.split("&")){
-                String[] pairArray = pair.split("=");
-                if( pairArray.length == 2 ){
-                    parameters.put( pairArray[0].toLowerCase(), pairArray[1]);
+            String hostRef = data;
+            int idxParam = data.indexOf("?");
+            if ( idxParam > -1 ){
+                hostRef = data.substring( 0, idxParam );
+                String paramStr = data.substring( idxParam + 1 );
+                for ( String pair: paramStr.split("&")){
+                    String[] pairArray = pair.split("=");
+                    if( pairArray.length == 2 ){
+                        parameters.put( pairArray[0].toLowerCase(), pairArray[1]);
+                    }
                 }
             }
             final String userName = parameters.get("user");
             final String password = parameters.get("password");
             final String sessionId = parameters.get("sessionid");
-            PartnerConnection partnerConnection;
+            final ConnectorConfig config = new ConnectorConfig();
+            if ( hostRef.length() == 0 ){
+                hostRef = "login.salesforce.com/services/Soap/u/51.0";
+            }
+            config.setAuthEndpoint( String.format( hostRef ));
+            LOGGER.info("Connect to endpoint '" + hostRef + "' using " + (sessionId != null ? "sessionid" : "user/password") );
             if (sessionId == null) {
                 if (userName == null) throw new SQLException("Missing username. Please add it to URL as user=<value>");
                 if (password == null) throw new SQLException("Missing password. Please add it to URL as password=<value>");
@@ -90,69 +91,28 @@ public class JdbcDriver implements Driver {
                                 password.toCharArray());
                     }
                 });
-                partnerConnection = getPartnerConnection( userName, password );
+                config.setUsername(userName);
+                config.setPassword(password);
             } else {
-                partnerConnection = getPartnerConnection(sessionId);
+                config.setSessionId( sessionId );
             }
-            final String h2DbName = md5Java( userName != null ? userName : sessionId );
-            H2Trigger.partnerConnection = partnerConnection;
+            try {
+                final PartnerConnection partnerConnection = Connector.newConnection(config);
+                final String h2DbName = Util.md5Java(userName != null ? userName : sessionId);
+                H2Trigger.partnerConnection = partnerConnection;
 
-            return getSalesforceConnection( h2DbName, partnerConnection, parameters );
+                return new SalesforceConnection( h2DbName, partnerConnection, parameters);
+            } catch ( ConnectionException ex ){
+                throw new SQLException( ex.getLocalizedMessage(), ex );
+            }
         } else {
-            throw new SQLException("Incorrect URL. Expected jdbc:dbschema:salesforce://<parameters>");
+            throw new SQLException("Incorrect URL. Expected jdbc:dbschema:salesforce://https://login|OTHER.salesforce.com/services/Soap/u/APIVERSION?<parameters>");
         }
     }
 
-    private SalesforceConnection getSalesforceConnection(String dbId, PartnerConnection partnerConnection, Map<String,String> parameters ) throws SQLException {
-        final String h2DatabasePath = getH2DatabasePath( dbId );
-        final String h2JdbcUrl = "jdbc:h2:" + h2DatabasePath + ";database_to_upper=false";
-        LOGGER.log(Level.INFO, "Create H2 database '" + h2JdbcUrl + "'");
-        return new SalesforceConnection( dbId, (JdbcConnection)(new org.h2.Driver().connect( h2JdbcUrl, new Properties() )), partnerConnection,  parameters );
-    }
 
-    private PartnerConnection getPartnerConnection(String sessionId ) throws SQLException {
-        try {
-            final ConnectorConfig config = new ConnectorConfig();
-            config.setSessionId( sessionId );
-            return createConnection(config);
-        } catch ( Throwable cause ){
-            throw new SQLException(cause);
-        }
-    }
-    private PartnerConnection getPartnerConnection(String user, String password ) throws SQLException {
-        try {
-            final ConnectorConfig config = new ConnectorConfig();
-            config.setUsername(user);
-            config.setPassword(password);
-            return createConnection(config);
-        } catch ( Throwable cause ){
-            throw new SQLException(cause);
-        }
-    }
-
-    private PartnerConnection createConnection(ConnectorConfig config) throws ConnectionException {
-        try {
-            config.setAuthEndpoint(String.format("https://%s/services/Soap/u/%s", DEFAULT_LOGIN_DOMAIN, DEFAULT_API_VERSION));
-            return Connector.newConnection(config);
-        } catch (ConnectionException ce) {
-            config.setAuthEndpoint(String.format("https://%s/services/Soap/u/%s", SANDBOX_LOGIN_DOMAIN, DEFAULT_API_VERSION));
-            return Connector.newConnection(config);
-        }
-    }
     // https://login.salesforce.com/services/Soap/u/51.0
 
-    private static final String DEFAULT_LOGIN_DOMAIN = "login.salesforce.com";
-    private static final String SANDBOX_LOGIN_DOMAIN = "test.salesforce.com";
-    private static final String DEFAULT_API_VERSION = "52.0";
-
-
-    private String getH2DatabasePath(String path ){
-        final File h2File = new File(INTERNAL_H2_LOCATION);
-        if ( !h2File.exists()) {
-            h2File.mkdirs();
-        }
-        return INTERNAL_H2_LOCATION + path;
-    }
 
     @Override
     public boolean acceptsURL(String url) {
@@ -194,25 +154,7 @@ public class JdbcDriver implements Driver {
         return null;
     }
 
-    private static String md5Java(String message){
-        String digest = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] hash = md.digest(message.getBytes(StandardCharsets.UTF_8));
 
-            //converting byte array to Hexadecimal String
-            StringBuilder sb = new StringBuilder(2*hash.length);
-            for(byte b : hash){
-                sb.append(String.format("%02x", b&0xff));
-            }
-
-            digest = sb.toString();
-
-        } catch ( NoSuchAlgorithmException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        }
-        return digest;
-    }
 
 
 
