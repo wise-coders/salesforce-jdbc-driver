@@ -75,7 +75,7 @@ public class JdbcDriver implements Driver {
             final String password = parameters.get("password");
             final String sessionId = parameters.get("sessionid");
             final ConnectorConfig config = new ConnectorConfig();
-            if ( hostRef.length() == 0 ){
+            if ( hostRef.length() == 0 || "localhost".equals( hostRef )){
                 hostRef = "login.salesforce.com/services/Soap/u/51.0";
             }
             config.setAuthEndpoint( String.format( hostRef ));
