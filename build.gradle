@@ -27,7 +27,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.force.api:force-partner-api:60.1.1'
+    implementation 'com.force.api:force-partner-api:61.1.0'
     implementation 'com.h2database:h2:2.2.224'
     implementation "org.apache.commons:commons-collections4:4.4"
     testImplementation 'junit:junit:4.13.2'

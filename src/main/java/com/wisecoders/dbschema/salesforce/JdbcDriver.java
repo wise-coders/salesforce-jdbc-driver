@@ -52,18 +52,23 @@ public class JdbcDriver implements Driver {
     @Override
     public Connection connect( String url, Properties info ) throws SQLException {
         if ( acceptsURL(JDBC_PREFIX)) {
+            LOGGER.info("Connect URL '" + url + "'." );
             final Map<String,String> parameters = new HashMap<>();
             if ( info != null ){
                 for ( Object key : info.keySet()){
                     parameters.put( key.toString(), info.get( key ).toString() );
                 }
             }
-            String data = url.substring(JDBC_PREFIX.length());
+            String data = url.substring( JDBC_PREFIX.length() );
             String hostRef = data;
-            int idxParam = data.indexOf("?");
-            if ( idxParam > -1 ){
-                hostRef = data.substring( 0, idxParam );
-                String paramStr = data.substring( idxParam + 1 );
+            int idx = data.indexOf("?");
+            int idx2 = data.indexOf(";");
+            if ( idx2 > -1 ){
+                idx = idx > -1 ? Math.min( idx, idx2 ) : idx2;
+            }
+            if ( idx > -1 ){
+                hostRef = data.substring( 0, idx );
+                String paramStr = data.substring( idx + 1 );
                 for ( String pair: paramStr.split("&")){
                     String[] pairArray = pair.split("=");
                     if( pairArray.length == 2 ){
@@ -76,9 +81,9 @@ public class JdbcDriver implements Driver {
             final String sessionId = parameters.get("sessionid");
             final ConnectorConfig config = new ConnectorConfig();
             if ( hostRef.length() == 0 || "localhost".equals( hostRef )){
-                hostRef = "login.salesforce.com/services/Soap/u/51.0";
+                hostRef = "https://login.salesforce.com/services/Soap/u/51.0";
             }
-            config.setAuthEndpoint( String.format( hostRef ));
+            config.setAuthEndpoint( hostRef );
             LOGGER.info("Connect to endpoint '" + hostRef + "' using " + (sessionId != null ? "sessionid" : "user/password") );
             if (sessionId == null) {
                 if (userName == null) throw new SQLException("Missing username. Please add it to URL as user=<value>");
@@ -103,6 +108,7 @@ public class JdbcDriver implements Driver {
 
                 return new SalesforceConnection( h2DbName, partnerConnection, parameters);
             } catch ( ConnectionException ex ){
+                LOGGER.log( Level.SEVERE, "PartnerConnection error: " + ex, ex );
                 throw new SQLException( ex.getLocalizedMessage(), ex );
             }
         } else {
