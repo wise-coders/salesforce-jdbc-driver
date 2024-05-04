@@ -80,8 +80,11 @@ public class JdbcDriver implements Driver {
             final String password = parameters.get("password");
             final String sessionId = parameters.get("sessionid");
             final ConnectorConfig config = new ConnectorConfig();
-            if ( hostRef.length() == 0 || "localhost".equals( hostRef )){
-                hostRef = "https://login.salesforce.com/services/Soap/u/51.0";
+            if ( hostRef.length() == 0 ){
+                hostRef = "https://login.salesforce.com/services/Soap/u/55.0";
+            }
+            if ( hostRef.contains("localhost")){
+                hostRef = hostRef.replaceAll("localhost", "login.salesforce.com" );
             }
             config.setAuthEndpoint( hostRef );
             LOGGER.info("Connect to endpoint '" + hostRef + "' using " + (sessionId != null ? "sessionid" : "user/password") );
@@ -109,7 +112,10 @@ public class JdbcDriver implements Driver {
                 return new SalesforceConnection( h2DbName, partnerConnection, parameters);
             } catch ( ConnectionException ex ){
                 LOGGER.log( Level.SEVERE, "PartnerConnection error: " + ex, ex );
-                throw new SQLException( ex.getLocalizedMessage(), ex );
+                final StringBuilder sb = new StringBuilder();
+                sb.append( ex);
+                if ( ex.getCause() != null ) sb.append( "\n").append( ex.getCause().getMessage() );
+                throw new SQLException( sb.toString(), ex );
             }
         } else {
             throw new SQLException("Incorrect URL. Expected jdbc:dbschema:salesforce://https://login|OTHER.salesforce.com/services/Soap/u/APIVERSION?<parameters>");

@@ -65,6 +65,7 @@ task zip(type: Zip, dependsOn:['clean','jar']) {
 task copyInUserHome(type: Copy,dependsOn:['clean','jar']) {
     from configurations.runtimeClasspath.allArtifacts.files
     from configurations.runtimeClasspath
+    from "build/libs" include "*.jar"
     into "${System.getProperty('user.home')}/.DbSchema/drivers/Salesforce/"
 }
 
