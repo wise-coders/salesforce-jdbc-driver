@@ -8,6 +8,7 @@ import com.sforce.ws.ConnectorConfig;
 import com.wisecoders.dbschema.salesforce.io.H2Trigger;
 import com.wisecoders.dbschema.salesforce.io.Util;
 
+import java.io.File;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.sql.*;
@@ -31,6 +32,11 @@ public class JdbcDriver implements Driver {
 
     static {
         try {
+            final File logsFile = new File("~/.DbSchema/logs/");
+            if ( !logsFile.exists()) {
+                logsFile.mkdirs();
+            }
+
             DriverManager.registerDriver( new JdbcDriver());
             LOGGER.setLevel(Level.ALL);
 
@@ -51,28 +57,31 @@ public class JdbcDriver implements Driver {
 
     @Override
     public Connection connect( String url, Properties info ) throws SQLException {
-        if ( acceptsURL(JDBC_PREFIX)) {
-            LOGGER.info("Connect URL '" + url + "'." );
-            final Map<String,String> parameters = new HashMap<>();
-            if ( info != null ){
-                for ( Object key : info.keySet()){
-                    parameters.put( key.toString(), info.get( key ).toString() );
+        if (acceptsURL(JDBC_PREFIX)) {
+            LOGGER.info("Connect URL '" + url + "'.");
+            final Map<String, String> parameters = new HashMap<>();
+            if (info != null) {
+                for (Object key : info.keySet()) {
+                    parameters.put(key.toString(), info.get(key).toString());
                 }
             }
-            String data = url.substring( JDBC_PREFIX.length() );
-            String hostRef = data;
-            int idx = data.indexOf("?");
-            int idx2 = data.indexOf(";");
-            if ( idx2 > -1 ){
-                idx = idx > -1 ? Math.min( idx, idx2 ) : idx2;
+            String salesforceURL = url;
+            if (salesforceURL.startsWith(JDBC_PREFIX)) {
+                salesforceURL = url.substring(JDBC_PREFIX.length());
             }
-            if ( idx > -1 ){
-                hostRef = data.substring( 0, idx );
-                String paramStr = data.substring( idx + 1 );
-                for ( String pair: paramStr.split("&")){
+            String hostRef = salesforceURL;
+            int idx = salesforceURL.indexOf("?");
+            int idx2 = salesforceURL.indexOf(";");
+            if (idx2 > -1) {
+                idx = idx > -1 ? Math.min(idx, idx2) : idx2;
+            }
+            if (idx > -1) {
+                hostRef = salesforceURL.substring(0, idx);
+                String paramStr = salesforceURL.substring(idx + 1);
+                for (String pair : paramStr.split("&")) {
                     String[] pairArray = pair.split("=");
-                    if( pairArray.length == 2 ){
-                        parameters.put( pairArray[0].toLowerCase(), pairArray[1]);
+                    if (pairArray.length == 2) {
+                        parameters.put(pairArray[0].toLowerCase(), pairArray[1]);
                     }
                 }
             }
@@ -80,17 +89,19 @@ public class JdbcDriver implements Driver {
             final String password = parameters.get("password");
             final String sessionId = parameters.get("sessionid");
             final ConnectorConfig config = new ConnectorConfig();
-            if ( hostRef.length() == 0 ){
+            if (hostRef.isEmpty()) {
                 hostRef = "https://login.salesforce.com/services/Soap/u/55.0";
             }
-            if ( hostRef.contains("localhost")){
-                hostRef = hostRef.replaceAll("localhost", "login.salesforce.com" );
+            if (hostRef.contains("localhost")) {
+                hostRef = hostRef.replaceAll("localhost", "login.salesforce.com");
             }
-            config.setAuthEndpoint( hostRef );
-            LOGGER.info("Connect to endpoint '" + hostRef + "' using " + (sessionId != null ? "sessionid" : "user/password") );
+            config.setAuthEndpoint(hostRef);
+            LOGGER.info("Connect to endpoint '" + hostRef + "' using " + (sessionId != null ? "sessionid" : "user/password"));
             if (sessionId == null) {
-                if (userName == null) throw new SQLException("Missing username. Please add it to URL as user=<value>");
-                if (password == null) throw new SQLException("Missing password. Please add it to URL as password=<value>");
+                if (userName == null)
+                    throw new SQLException("Missing username. Please add it to URL as user=<value>");
+                if (password == null)
+                    throw new SQLException("Missing password. Please add it to URL as password=<value>");
                 java.net.Authenticator.setDefault(new Authenticator() {
                     @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
@@ -102,33 +113,32 @@ public class JdbcDriver implements Driver {
                 config.setUsername(userName);
                 config.setPassword(password);
             } else {
-                config.setSessionId( sessionId );
+                config.setSessionId(sessionId);
             }
             try {
                 final PartnerConnection partnerConnection = Connector.newConnection(config);
                 final String h2DbName = Util.md5Java(userName != null ? userName : sessionId);
                 H2Trigger.partnerConnection = partnerConnection;
 
-                return new SalesforceConnection( h2DbName, partnerConnection, parameters);
-            } catch ( ConnectionException ex ){
-                LOGGER.log( Level.SEVERE, "PartnerConnection error: " + ex, ex );
+                return new SalesforceConnection(h2DbName, partnerConnection, parameters);
+            } catch (ConnectionException ex) {
+                LOGGER.log(Level.SEVERE, "PartnerConnection error: " + ex, ex);
                 final StringBuilder sb = new StringBuilder();
-                sb.append( ex);
-                if ( ex.getCause() != null ) sb.append( "\n").append( ex.getCause().getMessage() );
-                throw new SQLException( sb.toString(), ex );
+                sb.append(ex);
+                if (ex.getCause() != null) sb.append("\n").append(ex.getCause().getMessage());
+                throw new SQLException(sb.toString(), ex);
             }
         } else {
             throw new SQLException("Incorrect URL. Expected jdbc:dbschema:salesforce://https://login|OTHER.salesforce.com/services/Soap/u/APIVERSION?<parameters>");
         }
     }
 
-
     // https://login.salesforce.com/services/Soap/u/51.0
 
 
     @Override
     public boolean acceptsURL(String url) {
-        return url.startsWith(JDBC_PREFIX);
+        return url.startsWith(JDBC_PREFIX) || url.startsWith("https://");
     }
 
     static class ExtendedDriverPropertyInfo extends DriverPropertyInfo {
